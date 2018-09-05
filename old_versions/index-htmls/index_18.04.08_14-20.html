@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>App frontend</title>
+    <style>
+   .layer0 {
+    }
+   .layer1 {
+    position: relative; /* Относительное позиционирование */
+    background: #f0f0f0; /* Цвет фона */
+    height: 580px; /* Высота блока */
+   }
+   .layer2 {
+    position: absolute; /* Абсолютное позиционирование */
+    bottom: 15px; /* Положение от нижнего края */
+    right: 15px; /* Положение от правого края */
+    line-height: 1px;
+   }
+   .layer2_1 {
+    position: absolute; /* Абсолютное позиционирование */
+    bottom: 15px; /* Положение от нижнего края */
+    left: 15px; /* Положение от правого края */
+    line-height: 1px;
+   }
+   .layer2_2 {
+    position: absolute; /* Абсолютное позиционирование */
+    bottom: 15px; /* Положение от нижнего края */
+    right: 30px; /* Положение от правого края */
+    line-height: 1px;
+   }
+  </style>
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+
+    <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
+    <script src="frontend/js/jQuery/jquery-3.3.1/jquery.min.js" type="text/javascript" charset='UTF-8'></script>
+    <link rel="stylesheet" type="text/css" href="frontend/js/jQuery/jquery.imgareaselect-0.9.10/css/imgareaselect-default.css" />
+    <!-- <script type="text/javascript" src="frontend/js/jQuery/jquery.imgareaselect-0.9.10/scripts/jquery.min.js"></script> -->
+    <script type="text/javascript" src="frontend/js/jQuery/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.pack.js"></script>
+    <script type="text/javascript" src="frontend/js/jQuery/blockUI/jquery.blockUI.js"></script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+  </head>
+  <body>
+<div class="jumbotron text-center">
+  <h1>My First Bootstrap Page</h1>
+  <p>Resize this responsive page to see the effect!</p> 
+</div>
+  
+<div class="container">
+  <div class="row">
+    <div class="col-sm-5">
+      <h3>Column 1</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+    </div>
+    <div class="col-sm-5">
+      <h3>Column 2</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+    </div>
+    <div class="col-sm-5">
+      <h3>Column 3</h3>        
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+    </div>
+  </div>
+</div>
+     <!-- 
+    <h1>It is App frontend test</h1>
+    <p> We are using Node.js <script>document.write(process.versions.node)</script>,
+    Chromium <script>document.write(process.versions.chrome)</script>,
+    and Electron <script>document.write(process.versions.electron)</script>.</p>
+    <p>Input something to get echo reply to make sure backend sever is running</p>
+    <input id="input" value="Chen goes fishing"></input>
+    <div id="reply"></div>
+    <img id="chen" src='frontend/images/Chen.jpg' height="190" width="200"></img> -->
+  </body>
+
+
+
+  <!-- Init server -->
+  <script type="text/javascript" src='frontend/js/server/server_api.js'>
+  </script>
+  <script type="text/javascript" src='frontend/js/server/init_server.js'>
+  </script>
+  <!-- Init client -->
+  <script type="text/javascript" src='frontend/js/client/init_client.js'>
+  </script>
+  <!-- Client logics -->
+  <script type="text/javascript" src='frontend/js/client/logics/echo_on_ready.js'>
+  </script>
+  <script type="text/javascript" src='frontend/js/client/logics/echo_input.js'>
+  </script>
+  <!-- Server logics -->
+  <script type="text/javascript" src='frontend/js/server/logics/handle_server_update_event.js'>
+  </script>
+  <!-- Plugins -->
+<!--   <script src='frontend/js/jQuery/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.min.js'></script> -->
+  <!-- <script type="text/javascript">
+    $.blockUI({ message: '<h1><img src="frontend/images/busy.gif" /> Just a moment...</h1>' });
+    $(document).ready(function () {
+      $.unblockUI();
+      $('#chen').imgAreaSelect({
+        handles: true,
+        onSelectEnd: function (img, selection) {
+          alert('width: ' + selection.width + '; height: ' + selection.height);
+        }
+      });
+    });
+  </script> -->
+</html>

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<title>Image processing</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- WEB ARCHITECHTURE INIT -->
+	<!-- Init server -->
+	<script type="text/javascript" src='frontend/js/server/server_api.js'>
+	</script>
+	<script type="text/javascript" src='frontend/js/server/init_server.js'>
+	</script>
+	<!-- Init client -->
+	<script type="text/javascript" src='frontend/js/client/init_client.js'>
+	</script>
+	<!-- Client logics -->
+	<script type="text/javascript" src='frontend/js/client/logics/echo_on_ready.js'>
+	</script>
+	<!-- <script type="text/javascript" src='frontend/js/client/logics/echo_input.js'>
+	</script> -->
+	<!-- Server logics -->
+	<script type="text/javascript" src='frontend/js/server/logics/image_setting/set_image_from_base64.js'>
+	</script>
+	<script type="text/javascript" src='frontend/js/server/logics/image_setting/set_main_image_from_base64.js'>
+	</script>
+	<script type="text/javascript" src='frontend/js/server/logics/events/handle_server_update_event.js'>
+	</script>
+
+	<!-- Insert this line above script imports  -->
+	<script>if (typeof module === 'object') {window.module = module; module = 
+	undefined;}</script>
+	<!-- PLUGINS INIT -->
+	<!-- jQuery -->
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+	<script type="text/javascript" src="frontend/js/jQuery/jquery.imgareaselect-0.9.10/scripts/jquery.min.js"></script>
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- Image select -->
+	<link rel="stylesheet" type="text/css" href="frontend/js/jQuery/jquery.imgareaselect-0.9.10/css/imgareaselect-default.css" />
+	<script type="text/javascript" src="frontend/js/jQuery/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.pack.js"></script>
+	<!-- Stepper number input -->
+	<link href="frontend/js/jQuery/Stepper-master/jquery.fs.stepper.css" rel="stylesheet" type="text/css" media="all" />
+	<script src="frontend/js/jQuery/Stepper-master/jquery.fs.stepper.js"></script>
+	<!-- Bootstrap slider -->
+	<link rel="stylesheet" href="frontend/js/jQuery/boostrap-slider/css/bootstrap-slider.min.css">
+	<script type="text/javascript" src="frontend/js/jQuery/boostrap-slider/bootstrap-slider.js"></script>
+	<!-- Blocking UI -->
+	<script type="text/javascript" src="frontend/js/jQuery/blockUI/jquery.blockUI.js"></script>
+	<!-- Charts -->
+	<script language="javascript" type="text/javascript" src="frontend/js/jQuery/flot/jquery.flot.js"></script>
+	<!-- Insert this line after script imports -->
+	<script>if (window.module) module = window.module;</script>
+
+	<!-- STYLES INIT -->
+	<style>
+		.img-responsive {
+			width: 100%;
+		}
+		.col-full-h {
+			height: 100vh;
+		}
+		.btn-text {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: normal;
+		}
+		.top-buffer { 
+			margin-top:16px; 
+		}
+		.almost-fill-width{
+			width: 98%;
+		}
+		.fill-width-adaptive{
+			max-width: 100%;
+			height: auto;
+		}
+		.auto-dim{
+			width: auto;
+			height: auto;
+		}
+		.margin-6-2{
+			margin-top: 6px;
+			margin-bottom: 2px; 
+		}
+		.margin-l-r-2{
+			margin-left: 2px;
+			margin-right: 2px;
+		}
+		.box{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+		}
+		.row{
+			margin-top: 0px;
+			margin-bottom: -5px;
+		}
+		.center{
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+		}
+		.img {
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+				width: 40%;
+		}
+		.basic-el-height{
+			height: 30px;
+		}
+		.col-settings{
+			background-color: lightgrey;
+		}
+		/**/
+		/* The Overlay (background) */
+		.overlay {
+			/* Height & width depends on how you want to reveal the overlay (see JS below) */   
+			height: 100%;
+			width: 0;
+			position: fixed; /* Stay in place */
+			z-index: 1; /* Sit on top */
+			left: 0;
+			top: 0;
+			background-color: rgb(0,0,0); /* Black fallback color */
+			background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
+			overflow-x: hidden; /* Disable horizontal scroll */
+			transition: 0.3s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+		}
+		/* Position the content inside the overlay */
+		.overlay-content {
+			position: relative;
+			top: 25%; /* 25% from the top */
+			width: 100%; /* 100% width */
+			text-align: center; /* Centered text/links */
+			margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
+		}
+		 The navigation links inside the overlay 
+		.overlay a {
+			padding: 8px;
+			text-decoration: none;
+			font-size: 36px;
+			color: #818181;
+			display: block; /* Display block instead of inline */
+			transition: 0.3s; /* Transition effects on hover (color) */
+		}
+		/* When you mouse over the navigation links, change their color */
+		.overlay a:hover, .overlay a:focus {
+			color: #f1f1f1;
+		}
+		/* Position the close button (top right corner) */
+		.overlay .closebtn {
+			position: absolute;
+			top: 20px;
+			right: 45px;
+			font-size: 60px;
+		}
+		/* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
+		@media screen and (max-height: 450px) {
+				.overlay a {font-size: 20px}
+				.overlay .closebtn {
+						font-size: 40px;
+						top: 15px;
+						right: 35px;
+				}
+		}
+		/**/
+		.overlay-elements {
+			min-width:600px;
+			min-height:300px;
+		}
+		.overlay-well{
+			background-color: rgb(15, 15, 15);
+			color: white;
+			width: 60%;
+		}
+		.slider-width {
+			width: 85% !important;
+		}
+
+	</style>
+
+	</head>
+
+
+
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+
+
+				<div class="col-md-1 col-full-h" style="background-color: grey;">
+
+					<div class="row">
+						<p></p>
+						<input id="import_image_file_input" type="file" style="display: none" />
+						<a id="import_image_button" class="btn btn-sm btn-primary btn-block btn-text">Import image</a>
+						<a id="reset_image_button" class="btn btn-sm btn-primary btn-block btn-text">Reset image</a>
+						<a id="deselect_button" class="btn btn-sm btn-primary btn-block btn-text">Deselect</a>
+					</div>
+
+				</div>
+
+
+				<div id="main_image_container" class="col-md-7 col-full-h" style="background-color: darkgrey;">
+
+					<div class="container-fluid" style = "margin-bottom: 10px;">
+						<div class="row">
+							<img id="main_image" src="" class="center fill-width-adaptive" style="max-height: 90vh;"></img>
+							<!-- The overlay -->
+							<div id="main_overlay" class="overlay">
+								<a href="javascript:void(0)" class="closebtn" onclick="close_main_overlay()" style="margin-bottom: 0px;">&times;</a>
+								<!-- Overlay content -->
+								<div class="overlay-content">
+									<img id="first_overlay_image" src="" class="img center"></img>
+									<div id="first_overlay_image_text" class="well overlay-well center"></div>
+									<img id="second_overlay_image" src="" class="img center"></img>
+									<div id="second_overlay_image_text" class="well overlay-well center"></div>
+									<img id="third_overlay_image" src="" class="img center "></img>
+									<div id="third_overlay_image_text" class="well overlay-well center"></div>
+									<div id="first_overlay_plot" class="img overlay-elements"></div>
+									<div id="first_overlay_plot_text" class="well overlay-well center"></div>
+									<div id="second_overlay_plot" class="img overlay-elements"></div>
+									<div id="second_overlay_plot_text" class="well overlay-well center"></div>
+									<div id="third_overlay_plot" class="img overlay-elements"></div>
+									<div id="third_overlay_plot_text" class="well overlay-well center"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="col-md-4 col-full-h col-settings">
+
+					<div class="row">
+						<div class="col-md-4 col-settings">
+							<div class="row">
+								<p></p>
+								<a id="rgb_matrix_button" class="btn btn-sm btn-primary btn-block btn-text">RGB matrix</a>
+								<a id="l_hist_button" class="btn btn-sm btn-primary btn-block btn-text">L hist</a>
+								<!-- <div class="well well-sm margin-6-2">Hue</div>
+								<input id="hue_number" name="number" type="number" class="btn-block" step="1" min="0" max="360"> -->
+
+								.
+
+								<!-- <div class="slidecontainer">
+								  <p>Default range slider:</p>
+								  <input type="range" min="1" max="100" value="50">
+								  
+								  <p>Custom range slider:</p>
+								  <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+								</div> -->
+
+							</div>
+						</div>
+						<div class="col-md-4 col-settings"">
+							<div class="row">
+								<p></p>
+								<a id="hsv_matrix_button" class="btn btn-sm btn-primary btn-block btn-text">HSV matrix</a>
+								<a id="a_hist_button" class="btn btn-sm btn-primary btn-block btn-text">A hist</a>
+								<!-- <div class="well well-sm margin-6-2">Saturation</div>
+								<input id="saturation_number" name="number" type="number" class="btn-block" step="1" min="0" max="100"> -->
+							</div>  
+						</div>
+						<div class="col-md-4 col-settings">
+							<div class="row">
+								<p></p>
+								<a id="lab_matrix_button" class="btn btn-sm btn-primary btn-block btn-text">LAB matrix</a>
+								<a id="b_hist_button" class="btn btn-sm btn-primary btn-block btn-text">B hist</a>
+								<!-- <div class="well well-sm margin-6-2">Value</div>
+								<input id="value_number" name="number" type="number" class="btn-block" step="1" min="0" max="100"> -->
+							</div>
+						</div>
+					</div>
+
+					<!-- <p> </p> -->
+
+					<div class="row">
+					<p></p>
+						<div class="col-md-4 col-settings">
+							<div class="row">
+								<div class="well well-sm">Hue</div>
+							</div>
+						</div>
+						<div class="col-md-8 col-settings">
+							<div class="container-fluid slider-width">
+								<div class="row" style="margin-top: 10px !important;">
+									<input id="hue_number" style="width: 100% !important;" type="text" data-slider-min="0" data-slider-max="360" data-slider-step="1" data-slider-value="0" />
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+					<p></p>
+						<div class="col-md-4 col-settings">
+							<div class="row">
+								<div class="well well-sm">Saturation</div>
+							</div>
+						</div>
+						<div class="col-md-8 col-settings">
+							<div class="container-fluid  slider-width">
+								<div class="row" style=" margin-top: 10px !important;">
+									<input id="saturation_number" style="width: 100% !important;"type="text" data-slider-min="-100" data-slider-max="100" data-slider-step="1" data-slider-value="0" />
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+					<p></p>
+						<div class="col-md-4 col-settings">
+							<div class="row">
+								<div class="well well-sm">Value</div>
+							</div>
+						</div>
+						<div class="col-md-8 col-settings">
+							<div class="container-fluid  slider-width">
+								<div class="row" style=" margin-top: 10px !important;">
+									<input id="value_number" style="width: 100% !important;" type="text" data-slider-min="-100" data-slider-max="100" data-slider-step="1" data-slider-value="0" />
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+					<p></p>
+						<div class="col-md-4 col-settings">
+							<div class="row">
+								<a id="gauss_button" class="btn btn-sm btn-primary btn-block btn-text">Gauss</a>
+							</div>
+						</div>
+						<div class="col-md-2 col-settings">
+							<div class="row">
+								<div class="well well-sm basic-el-height box">x</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-settings">
+							<div class="row">
+								<input id="gauss_number" name="number" type="number" class="btn-block basic-el-height" step="0.1" min="0" max="20">
+							</div>
+						</div>
+					</div>
+
+
+					<div class="row">
+						<p></p>
+						<div class="col-md-4 col-settings">
+							<div class="row">
+								<a id="sobel_button" class="btn btn-sm btn-primary btn-block btn-text">Sobel</a>
+							</div>
+						</div>
+						<div class="col-md-2 col-settings">
+							<div class="row">
+								<div class="well well-sm basic-el-height box">x</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-settings">
+							<div class="row">
+								<input id="sobel_number" name="number" type="number" class="btn-block basic-el-height" step="0.1" min="0" max="20">
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<p></p>
+						<div class="col-md-4 col-settings">
+							<div class="row">
+								<a id="gabore_button" class="btn btn-sm btn-primary btn-block btn-text">Gabore</a>
+							</div>
+						</div>
+						<div class="col-md-2 col-settings">
+							<div class="row">
+								<div class="well well-sm basic-el-height box">x</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-settings">
+							<div class="row">
+								<input id="gabore_number" name="number" type="number" class="btn-block basic-el-height" step="0.1" min="0" max="20">
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<p></p>
+						<div class="col-md-4 col-settings">
+							<div class="row">
+								<a id="segmentation_button" class="btn btn-sm btn-primary btn-block btn-text">Segmentation</a>
+							</div>
+						</div>
+						<div class="col-md-2 col-settings">
+							<div class="row">
+								<div class="well well-sm basic-el-height box">x</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-settings">
+							<div class="row">
+								<input id="segmentation_number" name="number" type="number" class="btn-block basic-el-height" step="0.1" min="0" max="20">
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<p></p>
+						<div class="col-md-4 col-settings">
+							<div class="row">
+								<a id="mean_shift_button" class="btn btn-sm btn-primary btn-block btn-text">Mean shift</a>
+							</div>
+						</div>
+						<div class="col-md-2 col-settings">
+							<div class="row">
+								<div class="well well-sm basic-el-height box">x</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-settings">
+							<div class="row">
+								<input id="mean_shift_number" name="number" type="number" class="btn-block basic-el-height" step="0.1" min="0" max="20">
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<p></p>
+						<a id="classify_button" class="btn btn-sm btn-primary btn-block btn-text">Classify</a>
+					</div>
+
+				</div>
+
+
+			</div>
+		</div>
+
+		<!-- AFTERPAGE SCRIPTS -->
+		<!-- Blocking UI -->
+		<script type="text/javascript" src="frontend/js/scripts/blocking_ui/block_ui.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/blocking_ui/unblock_ui.js"></script>
+		<!-- Buttons -->
+		<script type="text/javascript" src="frontend/js/scripts/buttons/a_hist_matrix_button.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/buttons/b_hist_matrix_button.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/buttons/deselect_button.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/buttons/hsv_matrix_button.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/buttons/input_image_button.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/buttons/l_hist_matrix_button.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/buttons/lab_matrix_button.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/buttons/reset_image_button.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/buttons/rgb_matrix_button.js"></script>
+		<!-- Graphs -->
+		<script type="text/javascript" src="frontend/js/scripts/graphs/plot_data.js"></script>
+		<!-- Image Selection -->
+		<script type="text/javascript" src="frontend/js/scripts/image_selection/get_selection_json.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/image_selection/hide_main_image_selection.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/image_selection/make_image_selectable.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/image_selection/onSelectEnd.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/image_selection/show_main_image_selection.js"></script>
+		<!-- Init -->
+		<script type="text/javascript" src="frontend/js/scripts/init/init.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/init/load_starting_image.js"></script>
+		<!-- Overlay -->
+		<script type="text/javascript" src="frontend/js/scripts/overlay/close_main_overlay.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/overlay/open_main_overlay.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/overlay/set_element_disabled.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/overlay/set_main_overlay_elements_disabled.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/overlay/set_main_overlay_plots_disabled.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/overlay/set_main_overlay_images_disabled.js"></script>
+		<!-- Ready check -->
+		<script type="text/javascript" src="frontend/js/scripts/ready_check/check_if_ready.js"></script>
+		<!-- Sliders -->
+		<script type="text/javascript" src="frontend/js/scripts/sliders/init_sliders.js"></script>
+		<!-- Others -->
+		<script type="text/javascript" src="frontend/js/scripts/set_image_from_file.js"></script>
+		<script type="text/javascript" src="frontend/js/scripts/set_image_from_base64.js"></script>
+		<!-- Other scripts -->
+		<script type="text/javascript">
+			$(document).ready(function () {					
+				// $("#ex1").on("slideStop", function(slideEvt) {
+				// 	console.log(slideEvt.value);
+				// });
+			});
+
+			window.onload = function() {
+
+			}
+
+		</script>
+
+
+	</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- var d6 = [];
+for (var i = 0; i < 14; i += 0.5 + Math.random()) {
+	d6.push([i, Math.sqrt(2*i + Math.sin(i) + 5)]);
+}
+
+var d3 = [];
+for (var i = 0; i < 14; i += 0.5) {
+	d3.push([i, Math.cos(i)]);
+}
+
+plot_data("#first_overlay_plot", d6, steps = true);
+$("#first_overlay_plot_text").text('asdf');
+plot_data("#second_overlay_plot", d3, steps = true);
+$("#second_overlay_plot_text").text('fdsa'); -->
+
+
+
+
+
+<!-- var d6 = [];
+for (var i = 0; i < 14; i += 0.5 + Math.random()) {
+	d6.push([i, Math.sqrt(2*i + Math.sin(i) + 5)]);
+}
+
+$.plot("#placeholder", [{
+	data: d6,
+	lines: { show: true, steps: true }
+}]); -->
+
+
+<!-- Button to close the overlay navigation -->
+	<!-- <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
+
+								<!-- Overlay content -->
+								<!-- <div class="overlay-content">
+									<a href="#">About</a>
+									<a href="#">Services</a>
+									<a href="#">Clients</a>
+									<a href="#">Contact</a>
+									<div id="placeholder" class="img" style="min-width:600px;min-height:300px"></div>
+								</div>
+							</div> -->
+							<!-- Use any element to open/show the overlay navigation menu -->
+							<!-- <span onclick="openNav()">open</span> -->

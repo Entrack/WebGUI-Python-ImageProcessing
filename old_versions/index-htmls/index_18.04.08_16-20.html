@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+  <script type="text/javascript" src="frontend/js/jQuery/jquery.imgareaselect-0.9.10/scripts/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="frontend/js/jQuery/jquery.imgareaselect-0.9.10/css/imgareaselect-default.css" />
+  <script type="text/javascript" src="frontend/js/jQuery/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.pack.js"></script>
+  <script type="text/javascript" src="frontend/js/jQuery/blockUI/jquery.blockUI.js"></script>
+
+  <style type="text/css">
+    .img-responsive {
+    width: 95%;
+}
+/* Set gray background color and 100% height */
+    .sidenav {
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+//.col-sm-2 {
+//    background-color: grey;
+//    column-fill: full;
+//    /*min-height: 300px;*/
+//}
+//.col-sm-7 {
+//    background-color: lightgreen;
+//    column-fill: full;
+//    /*min-height: 300px;*/
+//}
+//.col-sm-3 {
+//    background-color: lightblue;
+//    column-fill: full;
+//    /*min-height: 300px;
+//}
+  </style>
+
+</head>
+<body>
+
+<div class="container-fluid">
+  <!-- <h1>My First Bootstrap Page</h1> -->
+  <!-- <p>This is some text.</p>  -->
+  <div class="row">
+  <div class="col-sm-2">&nbsp; .col-sm-1
+  <button style="width: 40px; height: 30px; display: block;">F</button>
+  <button style="width: 40px; height: 30px; display: block;">G</button>
+  </div>
+  <div class="col-sm-7">.col-sm-8
+    <div>
+    <img id="chen" src='frontend/images/Chen.jpg' class="img-responsive"></img>
+    
+  </div></div>
+  <div class="col-sm-3 sidenav">.col-sm-3</div>
+</div>
+</div>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('#chen').imgAreaSelect({
+        handles: true,
+        onSelectEnd: function (img, selection) {
+          alert('width: ' + selection.width + '; height: ' + selection.height);
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
