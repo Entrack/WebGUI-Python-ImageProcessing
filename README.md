@@ -1,7 +1,7 @@
 # WebGUI-Python-ImageProcessing
 This repo contains a python-backend + js-frontend image processing app.  
 
-Current app is desinged to be a demonstration of how can you use a web gui to run on desktop and be able to utilize powerfull Python backend processing. Operations are performed either with `numpy` or `opencv`.
+The current app is designed to be a demonstration of how can you use a web GUI to run on the desktop and be able to utilize powerful Python backend processing. Operations are performed either with `numpy` or `opencv`.
 
 ## Features
 #### The main window
@@ -35,8 +35,8 @@ Gauss filter application example
 <img src="docs/images/gauss.png" alt="gauss" height="300"/>  
 
 ## Architecture
-The code uses `zerorpc` inter-process communcation python package that allows this setup to run python-powered backend (that can be used e.g. machine learning or image processing) and flexible electron-powered UI.  
-This architecture is an adaptation of [this](https://www.fyears.org/2017/02/electron-as-gui-of-python-apps-updated.html) post, but unlike the initial app, my python server has it's own inner state and loop, therefore it can call the fontend by itself, successfully processing long queues (such as heavy image processing). The class architechteure was also changed.
+The code uses `zerorpc` inter-process communication python package that allows this setup to run python-powered backend (that can be used e.g. machine learning or image processing) and flexible electron-powered UI.  
+This architecture is an adaptation of [this](https://www.fyears.org/2017/02/electron-as-gui-of-python-apps-updated.html) post, but unlike the initial app, my python server has it's own inner state and loop, therefore it can call the frontend by itself, successfully processing long queues (such as heavy image processing). Class architecture was also changed.
 Simplified version of the architecture is provided below. It comprises of the python App class that incorporates both server that processes the AppAPI calls and the client that sends the App.run() loop commands to the frontend.
 ```text
 start()
