@@ -8,8 +8,11 @@ Current app is desinged to be a demonstration of how can you use a web gui to ru
 You can select the backend-frontend compression rate to perform processing on a smaller image
 <img src="docs/images/main.png" alt="main window" height="400"/>
 #### HSV, RGB, LAB components
+HSV components
 <img src="docs/images/HSV_matrix.png" alt="HSV_matrix" height="400"/>
+RGB components
 <img src="docs/images/RGB_matrix.png" alt="RGB_matrix" height="400"/>
+LAB components
 <img src="docs/images/LAB_matrix.png" alt="LAB_matrix" height="400"/>
 #### Operations within selection
 Initial L component hist
@@ -17,9 +20,9 @@ Initial L component hist
 Selecting part of the image
 <img src="docs/images/selection.png" alt="selection" height="300"/>
 Selection L component hist
-<img src="docs/images/selection_L_hist.png" alt="selection_L_hist" height="300"/>
-#### H, S, V online change
-The processing support smoooth fps change of component while you drag the slider
+<img src="docs/images/selection_L_hist.png" alt="selection_L_hist" height="300"/>  
+#### HSV online change  
+The processing supports smoooth component change while you drag the slider  
 <img src="docs/images/hue_change.png" alt="hue_change" height="300"/>
 <img src="docs/images/saturation_change.png" alt="saturation_change" height="300"/>
 <img src="docs/images/value_change.png" alt="value_change" height="300"/>
