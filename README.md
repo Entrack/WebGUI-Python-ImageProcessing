@@ -23,8 +23,12 @@ Selection L component hist
 <img src="docs/images/selection_L_hist.png" alt="selection_L_hist" height="300"/>  
 #### HSV online change
 The processing supports smoooth component change while you drag the slider  
+
+Hue up  
 <img src="docs/images/hue_change.png" alt="hue_change" height="300"/>  
+Saturation down  
 <img src="docs/images/saturation_change.png" alt="saturation_change" height="300"/>  
+Value up  
 <img src="docs/images/value_change.png" alt="value_change" height="300"/>  
 #### Filter operations
 Gauss filter application example  
